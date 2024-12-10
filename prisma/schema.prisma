@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Change to your database provider if different
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  password    String
+  lessons     Lesson[]  @relation("LessonAuthor")
+  comments    Comment[] @relation("CommentAuthor")
+  polls       UserPoll[]
+  pollVotes   PollOption[] @relation("PollVotes", fields: [id], references: [userId])
+  upvotes     Lesson[]  @relation("Upvotes", fields: [id], references: [userId])
+  downvotes   Lesson[]  @relation("Downvotes", fields: [id], references: [userId])
+}
+
+model Lesson {
+  id          Int        @id @default(autoincrement())
+  title       String
+  tags        Tag[]      @relation(references: [id])
+  description String
+  text        String
+  quiz        Quiz?
+  author      User       @relation("LessonAuthor", fields: [authorId], references: [id])
+  authorId    Int
+  upvotes     Int        @default(0)
+  downvotes   Int        @default(0)
+  comments    Comment[]  @relation(references: [id])
+}
+
+model Tag {
+  id       Int     @id @default(autoincrement())
+  tagName  String  @unique
+  watchers User[]  @relation(references: [id])
+}
+
+model Comment {
+  id          Int     @id @default(autoincrement())
+  commentText String
+  author      User    @relation("CommentAuthor", fields: [authorId], references: [id])
+  authorId    Int
+}
+
+model Quiz {
+  id        Int           @id @default(autoincrement())
+  questions QuizQuestion[]
+}
+
+model QuizQuestion {
+  id           Int          @id @default(autoincrement())
+  questionText String
+  quiz         Quiz         @relation(fields: [quizId], references: [id])
+  quizId       Int
+  quizAnswers  QuizAnswer[]
+}
+
+model QuizAnswer {
+  id             Int          @id @default(autoincrement())
+  answerText     String
+  isCorrectAnswer Boolean
+  question       QuizQuestion @relation(fields: [questionId], references: [id])
+  questionId     Int
+}
+
+model UserPoll {
+  id           Int         @id @default(autoincrement())
+  pollQuestion String
+  pollOptions  PollOption[]
+}
+
+model PollOption {
+  id       Int      @id @default(autoincrement())
+  text     String
+  votes    User[]   @relation("PollVotes", references: [id])
+}
+
+model Notebook {
+  id    Int     @id @default(autoincrement())
+  pages Page[]
+}
+
+model Page {
+  id      Int       @id @default(autoincrement())
+  text    String
+  lessons Lesson[]  @relation(references: [id])
+}
