@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,92 +8,88 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  username    String    @unique
-  password    String
-  lessons     Lesson[]  
-
-  Comment Comment[]
-
-  Tag Tag[]
-
-  PollOption PollOption[]
+  id         Int          @id @default(autoincrement())
+  username   String       @unique
+  password   String
+  Comment    Comment[]
+  lessons    Lesson[]
+  PollOption PollOption[] @relation("PollOptionToUser")
+  Tag        Tag[]        @relation("TagToUser")
 }
 
 model Lesson {
-  id          Int        @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
-  tags        Tag[]      
   description String
   text        String
-  author      User       @relation(fields: [authorId], references: [id])
   authorId    Int
-  upvotes     Int        @default(0)
-  downvotes   Int        @default(0)
-  comments    Comment[] 
-  Quiz Quiz[]
-  Page Page[]
+  upvotes     Int       @default(0)
+  downvotes   Int       @default(0)
+  author      User      @relation(fields: [authorId], references: [id])
+  comments    Comment[] @relation("CommentToLesson")
+  Page        Page[]    @relation("LessonToPage")
+  Quiz        Quiz[]    @relation("LessonToQuiz")
+  tags        Tag[]     @relation("LessonToTag")
 }
 
-
 model Tag {
-  id       Int     @id @default(autoincrement())
-  tagName  String  @unique
-  watchers User[] 
-  Lesson Lesson[]
+  id       Int      @id @default(autoincrement())
+  tagName  String   @unique
+  Lesson   Lesson[] @relation("LessonToTag")
+  watchers User[]   @relation("TagToUser")
 }
 
 model Comment {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   commentText String
-  author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
-  Lesson Lesson[]
+  author      User     @relation(fields: [authorId], references: [id])
+  Lesson      Lesson[] @relation("CommentToLesson")
 }
 
 model Quiz {
-  id        Int           @id @default(autoincrement())
+  id        Int            @id @default(autoincrement())
   questions QuizQuestion[]
-  Lesson Lesson[]
+  Lesson    Lesson[]       @relation("LessonToQuiz")
 }
 
 model QuizQuestion {
   id           Int          @id @default(autoincrement())
   questionText String
-  quiz         Quiz          @relation(fields: [quizId], references: [id])
   quizId       Int
   quizAnswers  QuizAnswer[]
+  quiz         Quiz         @relation(fields: [quizId], references: [id])
 }
 
 model QuizAnswer {
-  id             Int          @id @default(autoincrement())
-  answerText     String
+  id              Int          @id @default(autoincrement())
+  answerText      String
   isCorrectAnswer Boolean
-  question       QuizQuestion @relation(fields: [questionId], references: [id])
-  questionId     Int
+  questionId      Int
+  question        QuizQuestion @relation(fields: [questionId], references: [id])
 }
 
 model UserPoll {
-  id           Int         @id @default(autoincrement())
+  id           Int          @id @default(autoincrement())
   pollQuestion String
-  pollOptions  PollOption[]
+  pollOptions  PollOption[] @relation("PollOptionToUserPoll")
 }
 
 model PollOption {
-  id       Int      @id @default(autoincrement())
+  id       Int        @id @default(autoincrement())
   text     String
-  votes    User[]  
-  UserPoll UserPoll[]
+  votes    User[]     @relation("PollOptionToUser")
+  UserPoll UserPoll[] @relation("PollOptionToUserPoll")
 }
 
 model Notebook {
-  id    Int     @id @default(autoincrement())
-  pages Page[]
+  id    Int    @id @default(autoincrement())
+  pages Page[] @relation("NotebookToPage")
 }
 
 model Page {
-  id      Int       @id @default(autoincrement())
-  text    String
-  lessons Lesson[] 
-  Notebook Notebook[]
+  id       Int        @id @default(autoincrement())
+  text     String
+  lessons  Lesson[]   @relation("LessonToPage")
+  Notebook Notebook[] @relation("NotebookToPage")
 }
