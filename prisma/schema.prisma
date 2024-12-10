@@ -18,11 +18,12 @@ model User {
   username    String    @unique
   password    String
   lessons     Lesson[]  
-  comments    Comment[] 
-  polls       UserPoll[]
-  pollVotes   PollOption[] 
-  upvotes     Lesson[] 
-  downvotes   Lesson[]  
+
+  Comment Comment[]
+
+  Tag Tag[]
+
+  PollOption PollOption[]
 }
 
 model Lesson {
@@ -31,36 +32,41 @@ model Lesson {
   tags        Tag[]      
   description String
   text        String
-  quiz        Quiz?
-  author      User      
+  author      User       @relation(fields: [authorId], references: [id])
   authorId    Int
   upvotes     Int        @default(0)
   downvotes   Int        @default(0)
   comments    Comment[] 
+  Quiz Quiz[]
+  Page Page[]
 }
+
 
 model Tag {
   id       Int     @id @default(autoincrement())
   tagName  String  @unique
   watchers User[] 
+  Lesson Lesson[]
 }
 
 model Comment {
   id          Int     @id @default(autoincrement())
   commentText String
-  author      User    
+  author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
+  Lesson Lesson[]
 }
 
 model Quiz {
   id        Int           @id @default(autoincrement())
   questions QuizQuestion[]
+  Lesson Lesson[]
 }
 
 model QuizQuestion {
   id           Int          @id @default(autoincrement())
   questionText String
-  quiz         Quiz         
+  quiz         Quiz          @relation(fields: [quizId], references: [id])
   quizId       Int
   quizAnswers  QuizAnswer[]
 }
@@ -82,7 +88,8 @@ model UserPoll {
 model PollOption {
   id       Int      @id @default(autoincrement())
   text     String
-  votes    User[]   @relation("PollVotes", references: [id])
+  votes    User[]  
+  UserPoll UserPoll[]
 }
 
 model Notebook {
@@ -93,5 +100,6 @@ model Notebook {
 model Page {
   id      Int       @id @default(autoincrement())
   text    String
-  lessons Lesson[]  @relation(references: [id])
+  lessons Lesson[] 
+  Notebook Notebook[]
 }
