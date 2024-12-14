@@ -4,7 +4,7 @@
 
 
 <div class = "bg-[#0f0e17] min-h-screen w-screen">
-    <nav class = "min-w-screen flex items-center justify-between py-12">
+    <nav class = "min-w-screen flex items-center justify-between py-12 bg-[#0f0e17]">
       <div class = "">
         <p class = "text-[#fffffe] font-bold text-xl px-32 my-3"><span class="text-[#fffffe]">Skill</span><span class="text-[#FFA62F]">Hive</span></p>
       </div>  
