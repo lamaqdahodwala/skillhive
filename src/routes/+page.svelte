@@ -4,17 +4,6 @@
 
 
 <div class = "bg-[#0f0e17] min-h-screen w-screen">
-    <nav class = "min-w-screen flex items-center justify-between py-12 bg-[#0f0e17]">
-      <div class = "">
-        <p class = "text-[#fffffe] font-bold text-xl px-32 my-3"><span class="text-[#fffffe]">Skill</span><span class="text-[#FFA62F]">Hive</span></p>
-      </div>  
-      <div class ="flex justify-self-end justify-evenly space-x-5 px-32">
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <a class = "text-[#fffffe] font-bold text-sm hover:text-[#FFA62F] hover:cursor-pointer">Home</a>
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <a class = "text-[#fffffe] font-bold text-sm hover:text-[#FFA62F] hover:cursor-pointer">Sign-In</a>
-      <div>
-    </nav>
     <div class = "py-12 px-32  flex">
       <div class = "space-y-52">
         <div class="space-y-10">
