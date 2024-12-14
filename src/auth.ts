@@ -11,5 +11,11 @@ export const {handle, signIn, signOut} = SvelteKitAuth({
     clientSecret: GOOGLE_CLIENT_SECRET,
   })],
   secret: AUTH_SECRET,
-  adapter: PrismaAdapter(prisma)
+  adapter: PrismaAdapter(prisma),
+  callbacks: {
+    session({user, session}) {
+      session.user.id = user.id
+      return session
+    }
+  }
 })
