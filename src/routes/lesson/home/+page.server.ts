@@ -4,7 +4,9 @@ import type { PageServerLoad } from "./$types";
 export const load: PageServerLoad = async(event) => {
   let lessons = await prisma.lesson.findMany({
     orderBy: {
-      id: "desc"
+      upvotes: {
+        _count: "desc"
+      }
     },
     include: {
       author: {
