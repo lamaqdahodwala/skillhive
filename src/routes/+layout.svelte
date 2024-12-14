@@ -16,7 +16,7 @@
 		<a class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]">Home</a>
 		<!-- svelte-ignore a11y_missing_attribute -->
 		<button
-      on:click={() => signIn("google")}
+      onclick={() => signIn("google")}
 			class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]"
 			>Sign In</button>
 	</div>
