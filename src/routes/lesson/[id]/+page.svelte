@@ -6,6 +6,8 @@
 	ID: {data.lesson.title}
 </h1>
 
+<p>{data.hasVoted}</p>
+
 <hr />
 
 <div>

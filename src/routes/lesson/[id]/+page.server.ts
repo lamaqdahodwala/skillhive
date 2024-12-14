@@ -6,13 +6,30 @@ export const load: PageServerLoad = async (event) => {
 	let lesson = await prisma.lesson.findUnique({
 		where: {
 			id: Number(event.params.id)
+		},
+
+		include: {
+			upvotes: true
 		}
 	});
+
+	let userId = Number((await event.locals.auth())?.user?.id);
+	let hasVoted: boolean | null = false;
+
+	if (!userId) hasVoted = null;
+	else {
+		lesson.upvotes.map((voter) => {
+			if (voter.id === userId) {
+				hasVoted = true;
+			}
+		});
+	}
 
 	if (!lesson) throw error(404, 'Lesson not found');
 
 	return {
-		lesson: lesson
+		lesson: lesson,
+    hasVoted
 	};
 };
 
@@ -53,9 +70,9 @@ export const actions: Actions = {
 				}
 			});
 
-      return {
-        success: true
-      }
+			return {
+				success: true
+			};
 		}
 
 		await prisma.lesson.update({
@@ -69,8 +86,8 @@ export const actions: Actions = {
 			}
 		});
 
-    return {
-      success: true
-    }
+		return {
+			success: true
+		};
 	}
 };
