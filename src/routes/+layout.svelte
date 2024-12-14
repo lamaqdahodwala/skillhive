@@ -18,7 +18,7 @@
 		<button
       on:click={() => signIn("google")}
 			class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]"
-			href="/signin">Sign In</button>
+			>Sign In</button>
 	</div>
 </nav>
 
