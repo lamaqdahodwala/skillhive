@@ -19,7 +19,7 @@ export const actions: Actions = {
 
     let user = await event.locals.auth()
 
-    if (user?.user){
+    if (!user?.user){
       throw redirect(302, "/signin")
     }
 
@@ -27,8 +27,13 @@ export const actions: Actions = {
     await prisma.lesson.create({
       data: {
         title: title?.toString(), 
-        description: description.toString()
-
+        description: description.toString(),
+        author: {
+          connect: {
+            id: Number( user?.user?.id )
+          }
+        },
+        text: ""
       }
     })
   }
