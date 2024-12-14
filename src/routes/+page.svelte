@@ -11,9 +11,8 @@
       <div class ="flex justify-self-end justify-evenly space-x-5 px-32">
         <!-- svelte-ignore a11y_missing_attribute -->
         <a class = "text-[#fffffe] font-bold text-sm hover:text-[#FFA62F] hover:cursor-pointer">Home</a>
-        <a class = "text-[#fffffe] font-bold text-sm hover:text-[#FFA62F] hover:cursor-pointer">Log-In</a>
         <!-- svelte-ignore a11y_missing_attribute -->
-        <a class = "text-[#fffffe] font-bold text-sm hover:text-[#FFA62F] hover:cursor-pointer">Sign-Up</a>
+        <a class = "text-[#fffffe] font-bold text-sm hover:text-[#FFA62F] hover:cursor-pointer">Sign-In</a>
       <div>
     </nav>
     <div class = "py-12 px-32  flex">
