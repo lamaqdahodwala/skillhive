@@ -21,6 +21,8 @@ model User {
   lessons    Lesson[]
   pollVotes PollOption[] @relation("PollOptionToUser")
   watching Tag[] @relation("TagToUser")
+
+  lessonVotes Lesson[] @relation("upvotes") 
 }
 
 model Lesson {
@@ -29,8 +31,7 @@ model Lesson {
   description String
   text        String
   authorId    Int
-  upvotes     Int       @default(0)
-  downvotes   Int       @default(0)
+  upvotes     User[]    @relation(name: "upvotes")
   author      User      @relation(fields: [authorId], references: [id])
   comments    Comment[] @relation("CommentToLesson")
   Page        Page[]    @relation("LessonToPage")
