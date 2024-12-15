@@ -24,7 +24,7 @@ export const actions: Actions = {
     }
 
 
-    await prisma.lesson.create({
+    let lesson = await prisma.lesson.create({
       data: {
         title: title?.toString(), 
         description: description.toString(),
@@ -36,5 +36,10 @@ export const actions: Actions = {
         text: ""
       }
     })
+
+    return {
+      success: true, 
+      lessonId: lesson.id
+    }
   }
 }
