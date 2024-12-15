@@ -11,14 +11,24 @@
 			<span class="text-[#fffffe]">Skill</span><span class="text-[#FFA62F]">Hive</span>
 		</p>
 	</div>
+	<div>
+		<form action="/search" method="get">
+			<input
+				type="text"
+				class="rounded-full border-gray-700 bg-transparent outline-none"
+				placeholder="Search..."
+			/>
+		</form>
+	</div>
 	<div class="flex justify-evenly space-x-5 justify-self-end px-32">
 		<!-- svelte-ignore a11y_missing_attribute -->
 		<a class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]">Home</a>
 		<!-- svelte-ignore a11y_missing_attribute -->
 		<button
-      onclick={() => signIn("google")}
+			onclick={() => signIn('google')}
 			class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]"
-			>Sign In</button>
+			>Sign In</button
+		>
 	</div>
 </nav>
 
