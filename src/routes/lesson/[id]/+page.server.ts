@@ -1,5 +1,5 @@
 import { prisma } from '$lib/db';
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async (event) => {
 
 	return {
 		lesson: lesson,
-    hasVoted
+		hasVoted
 	};
 };
 
@@ -82,6 +82,64 @@ export const actions: Actions = {
 			data: {
 				upvotes: {
 					connect: { id: userId }
+				}
+			}
+		});
+
+		return {
+			success: true
+		};
+	},
+
+	createNotebookPage: async (event) => {
+		let user = await event.locals.auth();
+		if (!user?.user) throw fail(403);
+
+		const belongsToUser = {
+			id: Number(user.user.id)
+		};
+
+		let userNotebook = await prisma.user
+			.findUnique({
+				where: belongsToUser
+			})
+			.notebook();
+
+		if (!userNotebook) {
+			userNotebook = await prisma.notebook.create({
+				data: {
+					authorId: Number(user.user.id)
+				}
+			});
+		}
+
+		let pageExists = await prisma.page.findMany({
+			where: {
+				Notebook: {
+					id: userNotebook.id
+				},
+				onLesson: {
+					id: Number(event.params.id)
+				}
+			}
+		});
+
+		if (pageExists.length > 0) {
+			return;
+		}
+
+		await prisma.page.create({
+			data: {
+				text: '',
+				Notebook: {
+					connect: {
+						id: userNotebook.id
+					}
+				},
+        onLesson: {
+					connect: {
+						id: Number(event.params.id)
+					}
 				}
 			}
 		});
