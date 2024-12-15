@@ -21,7 +21,7 @@ model User {
   lessons       Lesson[]
   pollVotes     PollOption[] @relation("PollOptionToUser")
   watching      Tag[]        @relation("TagToUser")
-  notebook      Notebook?    @relation(fields: [id], references: [authorId])
+  notebook      Notebook?  @relation("notebookToUser")
 
   lessonVotes Lesson[] @relation("upvotes")
 }
@@ -94,7 +94,7 @@ model Notebook {
   id       Int    @id @default(autoincrement())
   pages    Page[] @relation("NotebookToPage")
   authorId Int    @unique
-  author   User[]
+  author   User @relation(fields: [authorId], references: [id], name: "notebookToUser")
 }
 
 model Page {
