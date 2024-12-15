@@ -10,19 +10,20 @@ datasource db {
 model User {
   id            Int          @id @default(autoincrement())
   name          String?
-  email         String?         @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  comments    Comment[]
-  lessons    Lesson[]
-  pollVotes PollOption[] @relation("PollOptionToUser")
-  watching Tag[] @relation("TagToUser")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  comments      Comment[]
+  lessons       Lesson[]
+  pollVotes     PollOption[] @relation("PollOptionToUser")
+  watching      Tag[]        @relation("TagToUser")
+  notebook      Notebook?     @relation(fields: [id], references: [authorId])
 
-  lessonVotes Lesson[] @relation("upvotes") 
+  lessonVotes Lesson[] @relation("upvotes")
 }
 
 model Lesson {
@@ -90,8 +91,10 @@ model PollOption {
 }
 
 model Notebook {
-  id    Int    @id @default(autoincrement())
-  pages Page[] @relation("NotebookToPage")
+  id       Int    @id @default(autoincrement())
+  pages    Page[] @relation("NotebookToPage")
+  authorId Int    @unique
+  author     User[]
 }
 
 model Page {
@@ -101,7 +104,6 @@ model Page {
   Notebook Notebook[] @relation("NotebookToPage")
 }
 
- 
 model Account {
   id                String  @id @default(cuid())
   userId            Int
@@ -115,32 +117,30 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       Int
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@unique([identifier, token])
 }
- 
-
