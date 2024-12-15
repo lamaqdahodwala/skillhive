@@ -17,6 +17,7 @@
 				type="text"
 				class="rounded-full border-gray-700 bg-transparent outline-none"
 				placeholder="Search..."
+        name="searchTerm"
 			/>
 		</form>
 	</div>
