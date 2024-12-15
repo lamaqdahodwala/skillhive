@@ -7,7 +7,7 @@
 
 <form method="get" use:enhance>
 	<input type="text" name="searchTerm"/>
-  <button>Search</button>
+  <button type="submit">Search</button>
 </form>
 
 {#each data.results as searchResult}

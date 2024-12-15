@@ -7,6 +7,7 @@
 <h1 class="text-3xl font-bold">
 	ID: {data.lesson.title}
 </h1>
+
 <form method="post" action="?/upvote" use:enhance>
 	<button class="m-2 rounded-lg { data.hasVoted ? 'bg-red-200' :"bg-blue-200" } p-1 px-5 font-bold transition-all">
 		{#if !data.hasVoted}
@@ -15,6 +16,10 @@
 			Remove vote
 		{/if}
 	</button>
+</form>
+
+<form method="post" use:enhance action="?/createNotebookPage">
+  <button>Create page in notebook</button>
 </form>
 
 <hr />
