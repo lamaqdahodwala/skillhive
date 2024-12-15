@@ -2,7 +2,7 @@
 	import { SignIn } from '@auth/sveltekit/components';
 	import '../app.css';
 	import { signIn } from '@auth/sveltekit/client';
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <nav class="min-w-screen flex items-center justify-between bg-[#0f0e17] py-12">
@@ -24,11 +24,15 @@
 		<!-- svelte-ignore a11y_missing_attribute -->
 		<a class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]">Home</a>
 		<!-- svelte-ignore a11y_missing_attribute -->
+    {#if data.user}
+      <button class="text-sm bg-green-900 bg-opacity-50 px-3 rounded-lg font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]">{data.user.name}</button>
+    {:else}
 		<button
 			onclick={() => signIn('google')}
 			class="text-sm font-bold text-[#fffffe] hover:cursor-pointer hover:text-[#FFA62F]"
 			>Sign In</button
 		>
+    {/if}
 	</div>
 </nav>
 
